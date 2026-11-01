@@ -18,9 +18,9 @@ const serifa = Cormorant_Garamond({
   display: 'swap',
 })
 
-const NOIVOS = 'Elayne & Lucas Gabriel'
-const DATA = '15 de maio de 2027'
-const DESCRICAO = `Com a bênção de nossos pais, convidamos você para o nosso casamento — ${DATA}, na Paróquia Nossa Senhora da Conceição, em Pacatuba, Ceará.`
+const NOIVOS = 'Ellayne & Lucas Gabriel'
+const DATA = '20 de março de 2027'
+const DESCRICAO = `Convidamos você para o nosso casamento — ${DATA}, na Paróquia Nossa Senhora da Conceição, em Pacatuba, Ceará.`
 
 export const metadata: Metadata = {
   title: `${NOIVOS} — Nosso casamento`,
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#46523f',
+  themeColor: '#7d4530',
   // Deixa a página usar a tela toda no celular, inclusive atrás do entalhe.
   viewportFit: 'cover',
 }

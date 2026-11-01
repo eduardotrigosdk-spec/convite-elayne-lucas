@@ -1,39 +1,41 @@
 /* ---------------------------------------------------------------------------
-   Elayne & Lucas Gabriel — convite de casamento.
+   Ellayne & Lucas Gabriel — convite de casamento.
 
-   Pensado para o celular primeiro: o convite é recebido no WhatsApp e aberto
+   Pensado para o celular primeiro: o convite chega pelo WhatsApp e é aberto
    com uma mão só. No computador a página continua com largura de telefone,
-   centrada sobre um fundo — é assim que um convite digital deve parecer, e
-   não uma página esticada.
+   centrada — convite digital esticado em tela cheia perde a cara de convite.
 
-   Paleta: verde-musgo, dourado e creme. Tipografia: uma caligráfica para os
-   nomes e uma serifada clássica para todo o resto.
+   Paleta terracota, sobre papel creme. O envelope é marfim com relevo e o
+   lacre é de cera terracota, como na referência.
    --------------------------------------------------------------------------- */
 
 :root {
-  --verde-fundo:  #46523f;   /* a capa, antes de abrir */
-  --verde:        #5c6b50;
-  --verde-suave:  #8a9a7b;   /* só ornamento; não passa em texto */
-  --verde-texto:  #70805f;   /* 4,1:1 — a versão legível do verde claro */
-  --verde-papel:  #eef0e8;
+  --barro-fundo:  #7d4530;   /* o fundo da cena, atrás do envelope */
+  --barro:        #b0674c;   /* só tipo grande e ornamento */
+  --barro-forte:  #9c5940;   /* superfícies cheias com texto creme — 4,7:1 */
+  --barro-texto:  #8f4f36;   /* 6,0:1 sobre o papel — seguro em texto pequeno */
+  --barro-fraco:  #e7cdbd;
 
-  --creme:  #f7f4ed;
-  --papel:  #fcfbf7;
-  --ouro:   #8a6d2a;          /* 4,7:1 sobre o papel — seguro em texto */
-  --ouro-claro: #c9a961;      /* só para filete e ornamento */
-  --tinta:   #333829;
-  --tinta-2: #666c59;
+  --marfim:   #f2e7da;       /* o papel do envelope */
+  --marfim-2: #e4d4c2;
+  --creme:    #f8f1e9;
+  --papel:    #fdf9f4;
 
-  --sobre-verde: #f7f4ed;
+  --tinta:   #3a2a21;
+  --tinta-2: #6e5a4e;        /* 6,2:1 sobre o papel */
 
-  --linha: rgba(51, 56, 41, 0.14);
-  --sombra: 0 2px 10px rgba(51, 56, 41, 0.07),
-            0 18px 40px -24px rgba(51, 56, 41, 0.25);
+  --folha:   #8b9375;        /* o verde discreto dos ramos */
+
+  --sobre-barro: #f8f1e9;
+
+  --linha:  rgba(58, 42, 33, 0.14);
+  --sombra: 0 2px 10px rgba(58, 42, 33, 0.07),
+            0 18px 40px -24px rgba(58, 42, 33, 0.28);
 
   --escrita: var(--fonte-escrita), 'Brush Script MT', cursive;
   --serifa:  var(--fonte-serifa), Georgia, 'Times New Roman', serif;
 
-  --tela: 30rem;              /* a largura de um telefone */
+  --tela: 30rem;
   --margem: clamp(1.35rem, 6vw, 2.25rem);
 
   color-scheme: light;
@@ -47,7 +49,7 @@
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 
 body {
-  background: var(--verde-fundo);
+  background: var(--barro-fundo);
   color: var(--tinta);
   font-family: var(--serifa);
   font-size: 1rem;
@@ -56,15 +58,12 @@ body {
   overflow-x: hidden;
 }
 
-/* Enquanto a capa está fechada, a página atrás não rola. */
-body.fechado { overflow: hidden; }
-
 img, svg { display: block; max-width: 100%; }
 a { color: inherit; }
 ul { list-style: none; padding: 0; }
 
-:focus-visible { outline: 2px solid var(--ouro); outline-offset: 3px; }
-::selection { background: var(--verde-suave); color: var(--creme); }
+:focus-visible { outline: 2px solid var(--barro-texto); outline-offset: 3px; }
+::selection { background: var(--barro-fraco); color: var(--tinta); }
 
 /* ---- O convite, como uma folha ------------------------------------------- */
 
@@ -75,7 +74,7 @@ ul { list-style: none; padding: 0; }
   min-height: 100svh;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 0 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.28);
 }
 
 .bloco { padding-inline: var(--margem); }
@@ -84,30 +83,18 @@ ul { list-style: none; padding: 0; }
 
 /* ---- Tipografia ------------------------------------------------------------ */
 
-.escrita {
-  font-family: var(--escrita);
-  font-weight: 400;
-  line-height: 1.05;
-  color: var(--verde);
-}
-
 .nomes {
   font-family: var(--escrita);
   font-size: clamp(3rem, 15vw, 4.25rem);
   line-height: 0.92;
-  color: var(--verde);
+  color: var(--barro-texto);
   text-align: center;
 }
 
 .nomes span { display: block; }
-.nomes .e {
-  font-size: 0.56em;
-  color: var(--ouro);
-  margin-block: 0.08em;
-}
+.nomes .e { font-size: 0.56em; color: var(--folha); margin-block: 0.08em; }
 
 .rotulo {
-  font-family: var(--serifa);
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.24em;
@@ -133,7 +120,7 @@ ul { list-style: none; padding: 0; }
   font-size: 0.75rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--ouro);
+  color: var(--barro-texto);
   margin-top: 0.9rem;
 }
 
@@ -147,50 +134,50 @@ ul { list-style: none; padding: 0; }
 
 /* ---- Ornamentos ------------------------------------------------------------ */
 
-/* Filete com losango no meio. Separa seções sem pesar. */
 .filete {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  color: var(--ouro-claro);
+  color: var(--barro-fraco);
   margin-block: clamp(1.5rem, 5vw, 2.25rem);
 }
 
-.filete::before,
-.filete::after {
+.filete::before, .filete::after {
   content: '';
   height: 1px;
   background: currentColor;
   flex: 1;
   max-width: 5rem;
-  opacity: 0.7;
 }
 
 .filete span {
   width: 0.4rem;
   height: 0.4rem;
   rotate: 45deg;
-  background: currentColor;
+  background: var(--barro);
   flex: none;
 }
 
-.ramo { color: var(--verde-suave); margin-inline: auto; }
-.ramo--peq { width: 4.5rem; }
+.ramo { color: var(--folha); margin-inline: auto; }
 .ramo--med { width: 7rem; }
 
 /* ---- A cena do envelope ---------------------------------------------------
 
-   A cena é alta (260svh) e o palco fica grudado no topo. Enquanto se rola
-   essa altura toda, o palco não sai do lugar — só o progresso muda. É o que
-   dá a sensação de abrir a carta com o dedo.
+   A cena é alta e o palco fica grudado no topo. Enquanto se rola essa
+   altura toda, o palco não sai do lugar — só o progresso muda.
 
-   --p vai de 0 a 1 e é escrito pelo script. Daqui para baixo é só CSS. */
+   --aba, --sobe, --letra, --some e --inicio vêm prontos do script, cada um
+   já com a sua curva. Daqui para baixo é só CSS aplicando.                 */
 
 .cena {
-  height: 260svh;
+  height: 280svh;
   position: relative;
-  background: var(--verde-fundo);
+  background: var(--barro-fundo);
+  /* um calor no centro, como luz de lado numa mesa */
+  background-image:
+    radial-gradient(ellipse at 50% 38%, rgba(255, 214, 184, 0.16), transparent 62%),
+    radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, 0.3), transparent 60%);
 }
 
 .palco {
@@ -201,74 +188,108 @@ ul { list-style: none; padding: 0; }
   place-items: center;
   overflow: hidden;
   padding: var(--margem);
-  /* profundidade para a aba girar de verdade, e não achatada */
-  perspective: 1400px;
-
-  /* Os três tempos. clamp() recorta cada um na sua faixa de progresso. */
-  --aba:   clamp(0, calc(var(--p, 0) / 0.45), 1);
-  --sobe:  clamp(0, calc((var(--p, 0) - 0.38) / 0.5), 1);
-  --some:  clamp(0, calc((var(--p, 0) - 0.86) / 0.14), 1);
-
-  opacity: calc(1 - var(--some));
-  transition: opacity 0.1s linear;
+  perspective: 1500px;
+  perspective-origin: 50% 42%;
+  opacity: calc(1 - var(--some, 0));
 }
 
 .envelope {
   position: relative;
   width: min(88vw, 23rem);
   aspect-ratio: 3 / 2;
-  transform-style: preserve-3d;
-  /* afunda um pouco enquanto a carta sobe, como um envelope esvaziando */
-  translate: 0 calc(var(--sobe) * 2.5vh);
+
+  /* perspective, e NÃO transform-style: preserve-3d.
+     Com preserve-3d o navegador ordena as camadas pela posição real em 3D
+     e ignora o z-index — a aba girada passava por cima da carta. Com
+     perspective a aba continua girando em profundidade, mas as peças
+     voltam a empilhar pelo z-index, que é o que esta cena precisa. */
+  perspective: 1200px;
+  /* inclina de leve enquanto abre, como se a mão levantasse a carta */
+  rotate: x calc(var(--sobe, 0) * 7deg);
+  translate: 0 calc(var(--sobe, 0) * 3vh);
 }
 
-/* O fundo do envelope, atrás de tudo. */
+/* O fundo do envelope. */
 .envelope__fundo {
   position: absolute;
   inset: 0;
-  background: linear-gradient(160deg, #6b7a5e, #556147);
-  border-radius: 0.35rem;
-  box-shadow: 0 24px 50px -18px rgba(0, 0, 0, 0.6);
+  background: linear-gradient(158deg, var(--marfim), var(--marfim-2));
+  border-radius: 0.3rem;
+  /* a sombra cresce conforme a carta sobe: o objeto ganha altura */
+  box-shadow:
+    0 calc(18px + var(--sobe, 0) * 22px) calc(38px + var(--sobe, 0) * 34px)
+      calc(-16px + var(--sobe, 0) * -4px) rgba(0, 0, 0, calc(0.45 + var(--sobe, 0) * 0.12));
 }
 
-/* O bolso da frente: um trapézio com o bico apontando para o meio.
-   Fica ACIMA da carta — é o que faz a carta parecer sair de dentro. */
+/* O bolso da frente, com o bico apontando para o meio. Fica ACIMA da carta
+   — é o que faz a carta parecer sair de dentro. */
 .envelope__bolso {
   position: absolute;
   inset: 0;
   z-index: 3;
-  background: linear-gradient(170deg, #61704f, #4b5740);
-  border-radius: 0.35rem;
-  clip-path: polygon(0 0, 50% 46%, 100% 0, 100% 100%, 0 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  background: linear-gradient(168deg, #efe3d5, #e0cfbb);
+  border-radius: 0.3rem;
+  clip-path: polygon(0 0, 50% 47%, 100% 0, 100% 100%, 0 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
-/* A aba de cima. Gira no eixo X, presa pela borda superior. */
+/* A aba. Gira no eixo X, presa pela borda de cima. */
 .envelope__aba {
   position: absolute;
   inset: 0 0 auto 0;
-  height: 62%;
+  height: 63%;
   z-index: 4;
   transform-origin: top center;
-  transform: rotateX(calc(var(--aba) * -178deg));
+  transform: rotateX(calc(var(--aba, 0) * -177deg));
 }
 
-/* Fechada, a aba precisa ficar por cima de tudo. Depois de passar da
-   vertical ela tem que ir para trás, senão cobre a carta que está subindo.
-   A troca é feita por classe, escrita pelo script — dá para fazer só em CSS,
-   mas sai uma conta ilegível e com suporte irregular. */
+/* Fechada a aba fica por cima de tudo; depois de passar da vertical precisa
+   ir para trás, senão cobre a carta que sobe. A troca é por classe, escrita
+   pelo script — dá para fazer só em CSS, mas sai uma conta ilegível. */
 .palco.virou .envelope__aba { z-index: 1; }
 
 .envelope__aba-face {
   position: absolute;
   inset: 0;
-  background: linear-gradient(185deg, #74835f, #5c6b50);
+  background: linear-gradient(182deg, #f6ecdf, #e8d8c6);
   clip-path: polygon(0 0, 100% 0, 50% 100%);
-  border-radius: 0.35rem 0.35rem 0 0;
+  border-radius: 0.3rem 0.3rem 0 0;
   backface-visibility: hidden;
+  /* a dobra ganha sombra conforme levanta */
+  filter: brightness(calc(1 - var(--aba, 0) * 0.07));
 }
 
-/* O lacre, no bico da aba. Some assim que a aba começa a abrir. */
+/* O relevo da aba: ramos nos cantos e o monograma no meio. Relevo é só
+   sombra e luz — nada aqui tem cor própria. */
+.aba__ramo {
+  position: absolute;
+  top: 6%;
+  width: 26%;
+  color: #b89b7e;
+  opacity: 0.4;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.85));
+}
+
+.aba__ramo--esq { left: 7%; }
+.aba__ramo--dir { right: 7%; scale: -1 1; }
+
+.aba__mono {
+  position: absolute;
+  top: 22%;
+  left: 50%;
+  width: 42%;
+  translate: -50% 0;
+}
+
+.monograma__letras {
+  font-family: var(--escrita);
+  font-size: 2.6rem;
+  fill: #c9ae92;
+  opacity: 0.55;
+  filter: drop-shadow(0 1.2px 0 rgba(255, 255, 255, 0.9));
+}
+
+/* O lacre, no bico da aba. Some assim que a aba começa a levantar. */
 .envelope__lacre {
   appearance: none;
   background: none;
@@ -278,12 +299,12 @@ ul { list-style: none; padding: 0; }
   position: absolute;
   z-index: 6;
   left: 50%;
-  top: 62%;
-  width: clamp(4.5rem, 21vw, 6rem);
+  top: 63%;
+  width: clamp(4.75rem, 22vw, 6.25rem);
   translate: -50% -50%;
-  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.45));
-  opacity: calc(1 - clamp(0, calc(var(--p, 0) / 0.14), 1));
-  pointer-events: auto;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.38));
+  opacity: calc(1 - var(--inicio, 0));
+  scale: calc(1 - var(--inicio, 0) * 0.12);
 }
 
 /* A carta. Começa dentro do bolso e sobe para fora. */
@@ -293,36 +314,41 @@ ul { list-style: none; padding: 0; }
   left: 50%;
   top: 50%;
   width: 84%;
-  aspect-ratio: 3 / 3.6;
-  translate: -50% calc(-50% - var(--sobe) * 62%);
-  scale: calc(0.92 + var(--sobe) * 0.12);
-  background: var(--papel);
-  border-radius: 0.3rem;
-  box-shadow: 0 16px 34px -14px rgba(0, 0, 0, 0.5);
+  aspect-ratio: 3 / 3.7;
+  translate: -50% calc(-50% - var(--sobe, 0) * 64%);
+  scale: calc(0.93 + var(--sobe, 0) * 0.11);
+  background:
+    linear-gradient(170deg, var(--papel), var(--creme));
+  border-radius: 0.25rem;
+  box-shadow: 0 calc(8px + var(--sobe, 0) * 16px) calc(20px + var(--sobe, 0) * 22px)
+              -12px rgba(0, 0, 0, 0.42);
   display: grid;
-  align-content: center;
-  justify-items: center;
-  gap: 0.5rem;
+  place-items: center;
   padding: 1.25rem;
   text-align: center;
-  /* só aparece depois que a aba já levantou boa parte */
-  opacity: clamp(0, calc((var(--p, 0) - 0.3) / 0.18), 1);
+  opacity: clamp(0, calc(var(--sobe, 0) * 6), 1);
 }
 
-.carta__ramo { width: 4.5rem; color: var(--verde-suave); }
+/* O conteúdo entra depois da carta já estar saindo — se aparecesse junto,
+   pareceria impresso no envelope. */
+.carta__dentro {
+  display: grid;
+  justify-items: center;
+  gap: 0.55rem;
+  opacity: var(--letra, 0);
+  translate: 0 calc((1 - var(--letra, 0)) * 0.6rem);
+}
+
+.carta__ramo { width: 4.5rem; color: var(--folha); }
 
 .carta__mono {
   font-family: var(--escrita);
   font-size: clamp(1.5rem, 7vw, 2rem);
   line-height: 1.05;
-  color: var(--verde);
+  color: var(--barro-texto);
 }
 
-.carta__traco {
-  width: 2.5rem;
-  height: 1px;
-  background: var(--ouro-claro);
-}
+.carta__traco { width: 2.5rem; height: 1px; background: var(--barro-fraco); }
 
 .carta__data {
   font-size: 0.75rem;
@@ -331,7 +357,7 @@ ul { list-style: none; padding: 0; }
   color: var(--tinta-2);
 }
 
-/* A dica embaixo. Some assim que a pessoa começa a arrastar. */
+/* A dica embaixo. */
 .dica {
   position: absolute;
   bottom: calc(var(--margem) + env(safe-area-inset-bottom, 0px));
@@ -343,16 +369,12 @@ ul { list-style: none; padding: 0; }
   font-size: 0.75rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(247, 244, 237, 0.78);
-  opacity: calc(1 - clamp(0, calc(var(--p, 0) / 0.12), 1));
+  color: rgba(248, 241, 233, 0.8);
+  opacity: calc(1 - var(--inicio, 0));
   pointer-events: none;
 }
 
-.dica svg {
-  width: 1.1rem;
-  height: 1.1rem;
-  animation: desce 2.2s ease-in-out infinite;
-}
+.dica svg { width: 1.1rem; height: 1.1rem; animation: desce 2.4s ease-in-out infinite; }
 
 @keyframes desce {
   0%, 100% { translate: 0 -0.2rem; opacity: 0.5; }
@@ -373,8 +395,7 @@ ul { list-style: none; padding: 0; }
   height: 100%;
   object-fit: cover;
   object-position: 50% 42%;
-  /* Entra com um avanço lento, que continua enquanto a pessoa lê. */
-  animation: aproxima 18s ease-out both;
+  animation: aproxima 20s ease-out both;
 }
 
 @keyframes aproxima {
@@ -382,7 +403,6 @@ ul { list-style: none; padding: 0; }
   to   { scale: 1; }
 }
 
-/* O creme sobe por cima da base da foto e costura a imagem na página. */
 .foto::after {
   content: '';
   position: absolute;
@@ -392,15 +412,14 @@ ul { list-style: none; padding: 0; }
   pointer-events: none;
 }
 
-/* ---- Faixa de convite ------------------------------------------------------ */
+/* ---- Faixa ----------------------------------------------------------------- */
 
 .faixa {
-  background: var(--verde);
-  color: var(--sobre-verde);
+  background: var(--barro-forte);
+  color: var(--sobre-barro);
   text-align: center;
   padding: 0.9rem 1.25rem;
   font-size: 0.9375rem;
-  letter-spacing: 0.02em;
   line-height: 1.45;
 }
 
@@ -413,7 +432,7 @@ ul { list-style: none; padding: 0; }
   font-weight: 600;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--ouro);
+  color: var(--barro-texto);
   margin-bottom: 0.85rem;
 }
 
@@ -436,7 +455,7 @@ ul { list-style: none; padding: 0; }
 .data__dia {
   font-size: clamp(3.25rem, 17vw, 4.5rem);
   line-height: 0.85;
-  color: var(--verde);
+  color: var(--barro-texto);
   font-variant-numeric: lining-nums;
   padding-inline: clamp(0.85rem, 4vw, 1.4rem);
   border-inline: 1px solid var(--linha);
@@ -460,7 +479,7 @@ ul { list-style: none; padding: 0; }
 }
 
 .contagem__caixa {
-  background: var(--verde-papel);
+  background: var(--creme);
   border: 1px solid var(--linha);
   border-radius: 0.6rem;
   padding: 0.75rem 0.3rem;
@@ -470,7 +489,7 @@ ul { list-style: none; padding: 0; }
 .contagem__n {
   font-size: clamp(1.375rem, 7vw, 1.75rem);
   line-height: 1;
-  color: var(--verde);
+  color: var(--barro-texto);
   font-variant-numeric: lining-nums tabular-nums;
 }
 
@@ -489,8 +508,7 @@ ul { list-style: none; padding: 0; }
   font-size: clamp(1.25rem, 6vw, 1.5rem);
   line-height: 1.25;
   text-align: center;
-  color: var(--verde);
-  letter-spacing: 0.01em;
+  color: var(--barro-texto);
 }
 
 .local__endereco {
@@ -507,7 +525,7 @@ ul { list-style: none; padding: 0; }
   overflow: hidden;
   border: 1px solid var(--linha);
   box-shadow: var(--sombra);
-  background: var(--verde-papel);
+  background: var(--creme);
   aspect-ratio: 4 / 3;
 }
 
@@ -516,9 +534,8 @@ ul { list-style: none; padding: 0; }
   height: 100%;
   border: 0;
   display: block;
-  /* O mapa do Google é muito saturado para a paleta; isto o acalma sem
-     deixá-lo ilegível. */
-  filter: saturate(0.72) contrast(1.02);
+  /* o mapa do Google é saturado demais para a paleta */
+  filter: saturate(0.7) sepia(0.12) contrast(1.02);
 }
 
 /* ---- Botões ---------------------------------------------------------------- */
@@ -538,17 +555,17 @@ ul { list-style: none; padding: 0; }
   letter-spacing: 0.06em;
   text-transform: uppercase;
   text-decoration: none;
-  border: 1px solid var(--verde);
+  border: 1px solid var(--barro-forte);
   cursor: pointer;
-  transition: background 0.3s ease, color 0.3s ease, translate 0.3s ease;
+  transition: background 0.35s ease, color 0.35s ease, translate 0.35s ease;
 }
 
-.botao--cheio { background: var(--verde); color: var(--sobre-verde); }
-.botao--vazio { background: transparent; color: var(--verde); }
+.botao--cheio { background: var(--barro-forte); color: var(--sobre-barro); }
+.botao--vazio { background: transparent; color: var(--barro-texto); }
 
 @media (hover: hover) {
-  .botao--cheio:hover { background: var(--verde-fundo); translate: 0 -2px; }
-  .botao--vazio:hover { background: var(--verde); color: var(--sobre-verde); translate: 0 -2px; }
+  .botao--cheio:hover { background: var(--barro-fundo); translate: 0 -2px; }
+  .botao--vazio:hover { background: var(--barro-forte); color: var(--sobre-barro); translate: 0 -2px; }
 }
 
 .botao svg { width: 1.0625rem; height: 1.0625rem; flex: none; }
@@ -570,16 +587,11 @@ ul { list-style: none; padding: 0; }
   text-decoration: none;
   color: inherit;
   font-family: var(--serifa);
-  cursor: pointer;
-  transition: border-color 0.3s ease, translate 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.35s ease, translate 0.35s ease, box-shadow 0.35s ease;
 }
 
 @media (hover: hover) {
-  .info:hover {
-    border-color: var(--verde-suave);
-    translate: 0 -2px;
-    box-shadow: var(--sombra);
-  }
+  .info:hover { border-color: var(--barro); translate: 0 -2px; box-shadow: var(--sombra); }
   .info:hover .info__icone { scale: 1.08; rotate: -6deg; }
 }
 
@@ -587,12 +599,12 @@ ul { list-style: none; padding: 0; }
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  background: var(--verde);
-  color: var(--sobre-verde);
+  background: var(--barro-forte);
+  color: var(--sobre-barro);
   display: grid;
   place-items: center;
   flex: none;
-  transition: scale 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), rotate 0.4s ease;
+  transition: scale 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), rotate 0.45s ease;
 }
 
 .info__icone svg { width: 1.125rem; height: 1.125rem; }
@@ -600,7 +612,7 @@ ul { list-style: none; padding: 0; }
 .info__nome {
   font-size: 1rem;
   font-style: italic;
-  color: var(--verde);
+  color: var(--barro-texto);
   line-height: 1.25;
 }
 
@@ -614,13 +626,35 @@ ul { list-style: none; padding: 0; }
   margin-top: 0.15rem;
 }
 
-.info__seta { margin-left: auto; color: var(--verde-suave); flex: none; }
+.info__seta { margin-left: auto; color: var(--barro); flex: none; }
+
+/* A frase manuscrita acima dos cartões. */
+.toque {
+  font-family: var(--escrita);
+  font-size: clamp(1.5rem, 7vw, 1.875rem);
+  text-align: center;
+  color: var(--barro-texto);
+  margin-bottom: 1.1rem;
+}
+
+/* Texto que ainda vai ser substituído. Fica visivelmente provisório para
+   ninguém publicar sem preencher. */
+.provisorio {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--barro-texto);
+}
+
+/* ---- Ações ----------------------------------------------------------------- */
+
+.acoes { display: grid; gap: 0.6rem; margin-top: 1.5rem; }
 
 /* ---- Encerramento ---------------------------------------------------------- */
 
 .fim {
-  background: var(--verde);
-  color: var(--sobre-verde);
+  background: var(--barro-forte);
+  color: var(--sobre-barro);
   text-align: center;
   padding-block: clamp(2.5rem, 9vw, 4rem);
 }
@@ -632,13 +666,13 @@ ul { list-style: none; padding: 0; }
   color: var(--creme);
 }
 
-.fim__ramo { color: rgba(247, 244, 237, 0.55); width: 6rem; margin-inline: auto; }
+.fim__ramo { color: rgba(248, 241, 233, 0.6); width: 6rem; margin-inline: auto; }
 
 .fim__nota {
   font-size: 0.75rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(247, 244, 237, 0.65);
+  color: rgba(248, 241, 233, 0.72);
   margin-top: 1.25rem;
 }
 
@@ -649,8 +683,6 @@ ul { list-style: none; padding: 0; }
   to   { opacity: 1; transform: none; }
 }
 
-/* Revelação na rolagem sem JavaScript. Onde o navegador não suporta, o
-   conteúdo simplesmente já aparece — que é o comportamento certo. */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .revela {
@@ -668,7 +700,7 @@ ul { list-style: none; padding: 0; }
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .lacre__selo, .lacre__dica, .foto img { animation: none !important; }
+  .dica svg, .foto img { animation: none !important; }
 }
 
 .oculto-visual {

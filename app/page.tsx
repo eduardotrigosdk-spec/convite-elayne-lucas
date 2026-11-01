@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Envelope from './Envelope'
 import Contagem from './Contagem'
 import {
-  Ramo, IconeLocal, IconePresenca, IconePresente, IconeTraje, IconeCalendario, Seta,
+  Ramo, IconeLocal, IconePresenca, IconeTraje, IconeCalendario, Seta,
 } from './enfeites'
 
 /* ═══ TROQUE AQUI ═══════════════════════════════════════════════════════════
@@ -10,23 +10,20 @@ import {
    os textos dos cartões são provisórios — é só substituir.
    ═════════════════════════════════════════════════════════════════════════ */
 
-const NOIVA = 'Elayne'
+const NOIVA = 'Ellayne'
 const NOIVO = 'Lucas Gabriel'
 
 // Com o fuso -03:00 declarado. Sem ele, quem abrisse de outro estado veria a
 // contagem regressiva errada.
-const QUANDO = '2027-05-15T17:30:00-03:00'
-const DIA = '15'
-const MES = 'Maio'
+const QUANDO = '2027-03-20T17:30:00-03:00'
+const DIA = '20'
+const MES = 'Março'
 const ANO = '2027'
 const SEMANA = 'Sábado'
 const HORA = '17:30h'
 
 const IGREJA = 'Paróquia Nossa Senhora da Conceição'
 const ENDERECO = 'Sen. Carlos Jereissati, Pacatuba — CE, 61800-000'
-
-const PAIS_NOIVA = ['— nome da mãe —', '— nome do pai —']
-const PAIS_NOIVO = ['— nome da mãe —', '— nome do pai —']
 
 const WHATSAPP_CONFIRMA = '5585988594548'   // para onde vão as confirmações
 
@@ -57,16 +54,9 @@ const INFOS = [
     externo: true,
   },
   {
-    Icone: IconePresente,
-    nome: 'Para nos presentear',
-    nota: 'Lista e chave Pix',
-    href: '#presentes',
-    externo: false,
-  },
-  {
     Icone: IconeTraje,
     nome: 'Dress code',
-    nota: 'Traje social',
+    nota: 'Traje social · padrinhos em terracota',
     href: '#traje',
     externo: false,
   },
@@ -96,20 +86,6 @@ export default function Pagina() {
             “O amor tudo sofre, tudo crê, tudo espera, tudo suporta.”
             <cite>1 Coríntios 13:7</cite>
           </p>
-        </section>
-
-        {/* ── Pais ─────────────────────────────────────────────────────── */}
-        <section className="bloco revela">
-          <div className="filete"><span /></div>
-          <p className="rotulo">Com a bênção de nossos pais</p>
-          <div className="pais">
-            <div>
-              {PAIS_NOIVA.map((n) => <p key={n}>{n}</p>)}
-            </div>
-            <div>
-              {PAIS_NOIVO.map((n) => <p key={n}>{n}</p>)}
-            </div>
-          </div>
         </section>
 
         {/* ── Nomes ────────────────────────────────────────────────────── */}
@@ -200,25 +176,13 @@ export default function Pagina() {
           </div>
         </section>
 
-        {/* ── Presentes ────────────────────────────────────────────────── */}
-        <section className="bloco ar-p revela" id="presentes">
-          <div className="filete"><span /></div>
-          <p className="rotulo" style={{ marginBottom: '1rem' }}>Para nos presentear</p>
-          <p className="texto">
-            A sua presença já é o nosso maior presente. Mas se quiser nos
-            ajudar a começar essa história, deixamos uma chave Pix e uma lista
-            com algumas ideias.
-          </p>
-          <p className="texto provisorio">— chave Pix e link da lista entram aqui —</p>
-        </section>
-
         {/* ── Traje ────────────────────────────────────────────────────── */}
         <section className="bloco ar-p revela" id="traje">
           <div className="filete"><span /></div>
           <p className="rotulo" style={{ marginBottom: '1rem' }}>Dress code</p>
           <p className="texto">
             Traje social. Pedimos carinhosamente que reservem o branco para a
-            noiva, e o verde-musgo para os padrinhos.
+            noiva — e os padrinhos vão de <strong>terracota</strong>.
           </p>
         </section>
 

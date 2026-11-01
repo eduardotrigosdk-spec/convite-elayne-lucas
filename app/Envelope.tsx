@@ -1,26 +1,39 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { Lacre, Ramo } from './enfeites'
+import { Lacre, Monograma, Ramo, RamoCanto } from './enfeites'
 
 /**
  * O envelope que abre conforme a pessoa arrasta a tela.
  *
- * A cena tem 260svh de altura e um palco grudado no topo. Enquanto a pessoa
- * rola esses 260svh, o palco fica parado e só o progresso muda — é isso que
- * dá a sensação de estar abrindo a carta com o dedo, em vez de assistir a
- * uma animação.
+ * Duas coisas fazem o movimento parecer caro, e nenhuma delas é "mais
+ * animação":
  *
- * O progresso (0 a 1) é escrito numa variável CSS e o resto é CSS puro. Três
- * tempos, que se sobrepõem de propósito para o movimento não ter degraus:
+ * 1. O progresso PERSEGUE a rolagem, não a copia. O dedo joga o alvo para
+ *    frente; o valor desenhado vai atrás, um pedaço do caminho por quadro.
+ *    Arrasto picotado — que é como todo mundo rola de verdade — vira
+ *    movimento contínuo, e no fim há um assentamento em vez de uma parada
+ *    seca. É a diferença inteira entre "animação ligada à rolagem" e
+ *    "abrir uma carta".
  *
- *   0,00 → 0,45   a aba levanta (gira 180° no eixo X)
- *   0,38 → 0,88   a carta sobe para fora do bolso e cresce
- *   0,86 → 1,00   o palco se apaga e o convite aparece atrás
+ * 2. Cada parte tem a sua curva. A aba desacelera no fim (easeOutCubic),
+ *    como tampa de caixa. A carta acelera e desacelera (easeInOutCubic),
+ *    como objeto com peso. Se as duas usassem a mesma curva, o conjunto
+ *    pareceria uma peça só se deformando.
  *
- * Não uso `animation-timeline: scroll()` porque ainda não funciona no Safari
- * — e convite de casamento é aberto no iPhone.
+ * Só transform e opacity são animados — as duas coisas que o navegador
+ * resolve sem refazer o layout.
  */
+
+/* Curvas. Nomeadas porque o que elas fazem importa mais que a fórmula. */
+const desacelera = (t: number) => 1 - Math.pow(1 - t, 3)
+const comPeso = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
+const acelera = (t: number) => t * t
+
+/** Recorta um trecho do progresso e devolve 0..1 dentro dele. */
+const trecho = (p: number, de: number, ate: number) =>
+  Math.min(Math.max((p - de) / (ate - de), 0), 1)
+
 export default function Envelope() {
   const cena = useRef<HTMLDivElement>(null)
   const palco = useRef<HTMLDivElement>(null)
@@ -30,48 +43,72 @@ export default function Envelope() {
     const elPalco = palco.current
     if (!elCena || !elPalco) return
 
+    function pintar(p: number) {
+      const s = elPalco!.style
+      s.setProperty('--aba', desacelera(trecho(p, 0, 0.42)).toFixed(4))
+      s.setProperty('--sobe', comPeso(trecho(p, 0.34, 0.86)).toFixed(4))
+      s.setProperty('--letra', trecho(p, 0.44, 0.66).toFixed(4))
+      s.setProperty('--some', acelera(trecho(p, 0.88, 1)).toFixed(4))
+      s.setProperty('--inicio', trecho(p, 0, 0.1).toFixed(4))
+      // Passada a vertical, a aba precisa ir para trás da carta que sobe.
+      elPalco!.classList.toggle('virou', p > 0.24)
+    }
+
     const menos = matchMedia('(prefers-reduced-motion: reduce)').matches
     if (menos) {
       // Sem movimento: a carta já aparece aberta, e a cena encolhe para não
-      // obrigar a pessoa a rolar três telas de nada.
-      //
-      // 0,86 e não 1: em 1 o palco termina de se apagar, e quem pediu menos
-      // movimento veria uma tela verde vazia em vez da carta aberta.
-      elPalco.style.setProperty('--p', '0.86')
-      elPalco.classList.add('virou')
+      // obrigar a pessoa a rolar três telas de nada. 0,86 e não 1, senão o
+      // palco terminaria de se apagar e sobraria uma tela vazia.
+      pintar(0.86)
       elCena.style.height = '100svh'
       return
     }
 
-    let pedido = 0
+    let alvo = 0
+    let atual = 0
+    let quadro = 0
 
     function medir() {
-      pedido = 0
       const r = elCena!.getBoundingClientRect()
-      const curso = r.height - innerHeight     // quanto dá para rolar preso
-      const andado = Math.min(Math.max(-r.top, 0), curso)
-      const p = curso > 0 ? andado / curso : 0
-      elPalco!.style.setProperty('--p', p.toFixed(4))
-      // Passada a vertical, a aba vai para trás da carta.
-      elPalco!.classList.toggle('virou', p > 0.26)
+      const curso = r.height - innerHeight
+      alvo = curso > 0 ? Math.min(Math.max(-r.top, 0), curso) / curso : 0
     }
 
-    function aoRolar() {
-      if (pedido) return
-      pedido = requestAnimationFrame(medir)
+    function laco() {
+      const falta = alvo - atual
+      // 0,14 do caminho por quadro. Menor = mais mole, maior = mais colado
+      // no dedo. Abaixo de 0,0004 a diferença não aparece em tela: encosta
+      // no alvo e dorme, para não ficar um laço rodando à toa.
+      if (Math.abs(falta) < 0.0004) {
+        atual = alvo
+        pintar(atual)
+        quadro = 0
+        return
+      }
+      atual += falta * 0.14
+      pintar(atual)
+      quadro = requestAnimationFrame(laco)
+    }
+
+    function acordar() {
+      medir()
+      if (!quadro) quadro = requestAnimationFrame(laco)
     }
 
     medir()
-    addEventListener('scroll', aoRolar, { passive: true })
-    addEventListener('resize', aoRolar, { passive: true })
+    atual = alvo
+    pintar(atual)
+
+    addEventListener('scroll', acordar, { passive: true })
+    addEventListener('resize', acordar, { passive: true })
     return () => {
-      cancelAnimationFrame(pedido)
-      removeEventListener('scroll', aoRolar)
-      removeEventListener('resize', aoRolar)
+      cancelAnimationFrame(quadro)
+      removeEventListener('scroll', acordar)
+      removeEventListener('resize', acordar)
     }
   }, [])
 
-  // Para quem toca em vez de arrastar: leva até o fim da cena.
+  /** Para quem toca em vez de arrastar: leva até o fim da cena. */
   function pular() {
     const r = cena.current?.getBoundingClientRect()
     if (!r) return
@@ -81,25 +118,30 @@ export default function Envelope() {
   return (
     <div className="cena" ref={cena}>
       <div className="palco" ref={palco}>
-        {/* A carta sai daqui de dentro */}
         <div className="envelope">
           <div className="envelope__fundo" />
 
           <div className="carta">
-            <Ramo className="carta__ramo" />
-            <p className="carta__mono">Elayne &amp; Lucas</p>
-            <p className="carta__traco" />
-            <p className="carta__data">15 · Maio · 2027</p>
+            <div className="carta__dentro">
+              <Ramo className="carta__ramo" />
+              <p className="carta__mono">Ellayne &amp; Lucas</p>
+              <span className="carta__traco" />
+              <p className="carta__data">20 · Março · 2027</p>
+            </div>
           </div>
 
           <div className="envelope__bolso" />
 
           <div className="envelope__aba">
-            <div className="envelope__aba-face" />
+            <div className="envelope__aba-face">
+              <RamoCanto className="aba__ramo aba__ramo--esq" />
+              <RamoCanto className="aba__ramo aba__ramo--dir" />
+              <Monograma className="aba__mono" />
+            </div>
           </div>
 
           <button className="envelope__lacre" type="button" onClick={pular}>
-            <Lacre iniciais="LE" />
+            <Lacre />
             <span className="oculto-visual">Abrir o convite</span>
           </button>
         </div>
